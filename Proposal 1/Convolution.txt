@@ -1,0 +1,67 @@
+***Digital Imagery**
+Digital images are electronic shots of a scene or scanned from documents. Each pixel is depicted by an intensity value, which is represented in binary code.
+The density of pixels in an image is called *resolution*. With the same image size, the more pixels that we keep to describe an image, the more detailed the image. 
+
+Figure 1.1 1 what happens as we reduce the resolution of an image while keeping its size the same
+A monochrome image can be described in terms of a two-dimensional light intensity function f(x,y), where the amplitude of f(x,y) is the intensity (brightness) of the image at position (x,y). The intensity of a monochrome image lies in the range 
+Lmin<f(x,y)<Lmax
+where the interval [Lmin,Lmax] is called the grey scale. There are two common grey scale storage methods: 8-bit storage and 1-bit storage.  
+The most common storage method is 8-bit storage. It can represent up to 2^8 colours for each pixel. The grey scale interval is [0,255], with 0 being black and 255 being white. 
+The less common storage method is 1-bit storage. There are two grey levels, with 0 being black and 1 being white. 
+
+Figure 1.1 1 grey scale
+A coloured image can be represented using multi-channel colour models. The most widely used model is the RGB. Coloured images are made up of three primary spectrums: red, green and blue (RGB). These three primary spectrums together create a three-dimensional colour space where red defining one axis, green defining the second, and blue defining the third. Every existing colour is described as a mixture of red, green, and blue light and located somewhere within the colour space.
+
+Figure 1.1 2 colour space
+Using RGB model, a coloured image can be described using a three-channel intensity function
+I RGB(x,y) =(FR(x,y) ,FG(x,y) ,FB(x,y))
+where FR(x,y) is the intensity at position (x,y) in the red channel, FG(x,y) is the intensity at position (x,y) in the green channel, and FB(x,y) is the intensity at position (x,y) in the blue channel. Each channel usually uses an 8-bit storage which can describe up to 2^8 colours. Thus, computers commonly use a 24-bit storage to describe the intensity at position (x,y), which can describe up to 2^24 colours.
+
+Figure 1.1 3 colour intensity   
+**Digital image concepts**
+**Convolution **
+Convolution is an image transformation technique using neighbourhood (or area-based) operators. The objective of image convolution is to process an input image in order to enhance some important features that is suitable for a specific application. It has two main approaches: spacial-domain approach and  frequency-domain approach. 
+Spacial-domain and frequency-domain approach can both be described in terms of convolutional function:
+g(x,y) = h(x,y)*f(x,y)
+given f(x,y) is the output image, h(x,y) is the invariant operator and g(x,y) is the output image. 
+In spacial-domain, we look at the value of each pixel varies with respect to scene whereas in frequency-domain, we look at the rate at which the pixel values change in spatial-domain. Thus, in frequency-domain approach, we will have to convert the pixel values into frequency-domain before applying convolution, then convert the result back into spatial-domain. We will mainly discuss about spacial-domain procedure in this section. 
+The procedure for convolution in spacial-domain is as follows: A filter (sometimes can be referred to as a mask, a kernel or a window) centred at point (u,v) is flipped in both dimensions and then slidden around the input image. Each time the filter is placed at a new position, every pixel of the input image contained within the filter is multiplied by the corresponding filter coefficient and then summed together. The result from each multiplication and summation declares the next pixel of the output image. The described procedure is repeated this until all values of the image has been calculated. It is mathematically described as:
+G(i,j) = ∑∑ H(u,v)F(i-u,j-v)
+where F is the output image, H is the filter and G is the output image. 
+
+Figure 2.1.2. 1 a 3x3 neighbourhood about point (u,v) in an image 
+Below we will give two simple examples to illustrate the application of convolutional filtering. 
+The first application is to highlight edges in an image. Some known edge enhancement filters are Prewitt operator, Sobel operator, Robinson compass masks, Krisch compass Masks and Laplacian operator. The decision on which filter to use depends on our desired results. Here we will describe the use of Sobel edge detection. A Sobel filter is used to calculate edges in both horizontal and vertical direction.
+The vertical Mask of Sobel operator is as follows:
+
+Figure 2.1.2. 2 the vertical Mask of Sobel operator
+The pixels at the corresponding position to the area declared by this filter of the input image are respectively multiply by -1,0,1,-2,0,2,-1,0 and 1. The results of these nine multiplications are then summed. This process is repeated until all values of the image has been calculated. 
+The horizontal Mask of Sobel operator is as follows:
+
+Figure 2.1.2. 3 the horizontal Mask of Sobel operator
+Similarly, the pixels at the corresponding position to the area declared by this filter of the input image are respectively multiply by -1,-2,-1,0,0,0,1,2 and 1. The results of these nine multiplications are then summed. This process is repeated until all values of the image has been calculated. 
+This give more weight age to the pixel values around the edge region. It thus increases the edges intensities. As a result, the output image edges become enhanced comparatively to the original image.
+The first application is to blur an image. There are three common type of filters that are used to perform blurring: Mean filter, weighted average filter and gaussian filter. We are going to discuss about mean filter. In a mean filter, there are an odd number of filter elements, all of which are the same and can be summed to one. For example, a 3x3 can be declared as followed:
+
+Figure 2.1.2. 4 the 3x3 mean filter
+The pixels at the corresponding position to the area declared by this filter of the input image are respectively multiply by 1/9. The results of these nine multiplications are then summed. 
+This operation can be used to discard false effects that may be present in a digital image as a result of poor sampling system or transmitting channel. This process is repeated until all values of the image has been calculated. 
+
+**Machine learning**
+**Core concepts of machine learning**
+Machine learning investigates how computers can automatically learn to recognise patterns and make intelligent decisions based on the given data. It involves two learning types: supervised and unsupervised. 
+Supervised learning (SVM) is equivalent to data classification. Computers learn patterns from the labeled examples then use them to make intelligent classification on the unknown data. 
+Unsupervised learning (USVM) is equivalent to clustering. Initially, there is no label associated with the data. Computers try to divide the dataset into clusters to discover classes within the data. Using USVM, the learned model cannot tell us the semantic meaning of the clusters found.
+Data classification consists of learning step and classification step. Computers build a classification model by studying the training set made up of pre-labeled tuples. Each tuple X is represented by an n-dimensional attribute vector, X = (x1, x2,..., xn). Every tuple belongs to a predefined class as determined by an another attribute called the class label attribute. Class label attribute is discrete-valued. 
+In the classification phrase, the learned model is used for predicting the class label for given data. To avoid overfitting (i.e. Overfitting describes the problem when the model is tailored to fit the random noise in one specific sample rather than reflecting the overall population), a testing set is used. Each testing set is also made up of tuples and their associated labels. They are independent of training sets. 
+The given dataset is divided into training and testing sets using one of these three following methods:
+Hold out: The given data set is divided into two independent sets: training set and testing set. Two-thirds of the data are in the training set and one-third of the data is in the testing set. 
+k-fold cross-validation: The data set is divided into k subsets, and the holdout method is repeated k times. Each time, one of the k subsets is used as the test set and the other k-1 subsets are put together to form a training set. Then the average error across all k trials is computed. The advantage of this method is that it matters less how the data gets divided.
+Bootstrap: A common bootstrap method is the .632 bootstrap. Given a set of d tuples. This dataset will be sample d times with replacement. Each time a tuple is selected, it is re-added into the data pool and likely to be selected again. The data that do not make it into the training set will eventually be added into the testing set. The training set and the testing set are not independent. In .632 bootstrap, 63.2% of the dataset will end up in the bootstrap sample, and the remaining 36.8% will form the test set.  
+**Classical neural networks**
+**Neural networks**
+
+**Back propagation**
+
+**Convolutional Neural Networks**
+**Back propagation**
