@@ -58,5 +58,12 @@ The given dataset is divided into training and testing sets using one of these t
 Hold out: The given data set is divided into two independent sets: training set and testing set. Two-thirds of the data are in the training set and one-third of the data is in the testing set. 
 k-fold cross-validation: The data set is divided into k subsets, and the holdout method is repeated k times. Each time, one of the k subsets is used as the test set and the other k-1 subsets are put together to form a training set. Then the average error across all k trials is computed. The advantage of this method is that it matters less how the data gets divided.
 Bootstrap: A common bootstrap method is the .632 bootstrap. Given a set of d tuples. This dataset will be sample d times with replacement. Each time a tuple is selected, it is re-added into the data pool and likely to be selected again. The data that do not make it into the training set will eventually be added into the testing set. The training set and the testing set are not independent. In .632 bootstrap, 63.2% of the dataset will end up in the bootstrap sample, and the remaining 36.8% will form the test set.  
-**GPGPU Concepts**
-**Training on multiple GPUs **
+**GPU Concepts**
+The enormous amount of input data of deep learning may considerably reduce computers’ processing speed. This problem can be overcome by spreading and training the networks across processing units. There are two types of processing units: central processing unit (CPU) and graphics processing unit (GPUs). 
+In compare with CPU, GPUs are far more powerful and efficient in parallel computing. They can be used to train far larger training sets in considerably less time. Current GPUs allow cross-GPU parallelisation to be read and write into one another’s memory directly. Furthermore, GPUs support networks to be trained in the cloud, which requires less power and infrastructure. Even though each GPU has limited memory, which may restrict the size of networks to be trained on one, it can still distribute the networks size cross one another. 
+Recent deep learning toolkits are mostly develop based on CUDA library. CUDA GPU support requires having a GPU card with NVIDIA Compute Capability >= 3.0. 
+**CNN Software Frameworks**
+**Tensorflow**
+**Related research**
+
+
