@@ -58,10 +58,5 @@ The given dataset is divided into training and testing sets using one of these t
 Hold out: The given data set is divided into two independent sets: training set and testing set. Two-thirds of the data are in the training set and one-third of the data is in the testing set. 
 k-fold cross-validation: The data set is divided into k subsets, and the holdout method is repeated k times. Each time, one of the k subsets is used as the test set and the other k-1 subsets are put together to form a training set. Then the average error across all k trials is computed. The advantage of this method is that it matters less how the data gets divided.
 Bootstrap: A common bootstrap method is the .632 bootstrap. Given a set of d tuples. This dataset will be sample d times with replacement. Each time a tuple is selected, it is re-added into the data pool and likely to be selected again. The data that do not make it into the training set will eventually be added into the testing set. The training set and the testing set are not independent. In .632 bootstrap, 63.2% of the dataset will end up in the bootstrap sample, and the remaining 36.8% will form the test set.  
-**Classical neural networks**
-**Neural networks**
-
-**Back propagation**
-
-**Convolutional Neural Networks**
-**Back propagation**
+**GPGPU Concepts**
+**Training on multiple GPUs **
