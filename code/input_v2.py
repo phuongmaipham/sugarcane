@@ -127,7 +127,7 @@ def distorted_image(image):
   distorted_image = tf.image.adjust_contrast(distorted_image,contrast_factor = random.uniform(1.1,1.3))
   #good value = 0.7-0.9 
   distorted_image = tf.image.central_crop(distorted_image,central_fraction=random.uniform(0.7,0.9))
-  resized = tf.image.resize_images(distorted_image, 500, 500, 3)
+  resized = tf.image.resize_images(distorted_image, 500, 500, 1)
   resized.set_shape([500,500,3])
   
   # Because these operations are not commutative, consider randomizing
@@ -159,7 +159,6 @@ def _generate_image_and_label_batch(image, label, min_queue_examples,
     images, label_batch = tf.train.shuffle_batch([image, label],
                                                   batch_size=batch_size,
                                                   capacity=min_queue_examples + 3 * batch_size,
-                                                  enqueue_many = True,
                                                   min_after_dequeue=min_queue_examples)
   else:
     images, label_batch = tf.train.batch([image, label],
@@ -236,153 +235,43 @@ def read_images_from_disk(input_queue):
   file_contents = tf.read_file(input_queue[0])
   example = tf.image.decode_png(file_contents, channels=3)
   return example, label
-
-'''
-def view_points(image,label):
   
-  image: a [width, height, channel] tensor
-  returns: a [batch, width, height, channel] tensor
-  
-  print ('MY IMAGE')
-  print (image)
-  for i in range (5):
-    # Randomly flip the image horizontally.
-    distorted_image = tf.image.random_flip_left_right(image)
-    #good value = 0.1, 0.05
-    distorted_image = tf.image.adjust_brightness(distorted_image,delta=random.uniform(0.05,0.1)) 
-    #good value = 1.1 - 1.3 
-    distorted_image = tf.image.adjust_contrast(distorted_image,contrast_factor = random.uniform(1.1,1.3))
-    #good value = 0.7-0.9 
-    distorted_image = tf.image.central_crop(distorted_image,central_fraction=random.uniform(0.7,0.9))
-    resized = tf.image.resize_images(distorted_image, 500, 500, 1)
-    resized.set_shape([500,500,3])
-    images, label_batch = tf.train.batch([resized, label], batch_size=5)
-  images = tf.reshape(images, [-1, 500, 500, 3])
-  label_batch = tf.reshape(label_batch, [-1])
-  print ('view points')
-  print (images)
-  print (label_batch)
-  return images, label_batch
-'''
-def evaluation (batch_size):
-  filenames, labels = extract_labels(data_dir_eval,txt_dir_eval,one_hot=False, num_classes=3)
-  num_examples_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_EVAL
-  filename_queue = tf.train.string_input_producer(filenames)
-  filename,read_input = read_image(filename_queue)
-  resized = tf.image.resize_images(read_input, 500, 500, 1)
-  resized.set_shape([500,500,3])
-  images = tf.convert_to_tensor(filenames, dtype=tf.string)
-  labels = tf.convert_to_tensor(labels, dtype=tf.int32)
-  input_queue = tf.train.slice_input_producer([images, labels],
-   shuffle=True)  
-  image, label = read_images_from_disk(input_queue)
-  #reshaped_image1 = distorted_image(read_input)
-  #reshaped_image2 = distorted_image(read_input)
-  min_fraction_of_examples_in_queue = 0.4
-  min_queue_examples = int(num_examples_per_epoch * min_fraction_of_examples_in_queue)
-  images,labels = _generate_image_and_label_batch(resized, label,
-                                                  min_queue_examples, batch_size,
-                                                  shuffle=False)
-  #batch_size = 5
-  for x in range (batch_size):
-    image_batch = tf.slice(images,[x,0,0,0],[1,500,500,3])
-    image_batch = tf.reshape(image_batch,[500,500,3])
-    label_batch = tf.slice(labels,[x],[1])
-    label_batch = tf.reshape(label_batch,[1])
-    image_batch_1 = distorted_image(image_batch)
-    min_fraction_of_examples_in_queue = 0.4
-    num_examples_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN
-    min_queue_examples = int(num_examples_per_epoch * min_fraction_of_examples_in_queue)
-    images_batch_1,labels_batch_1 = _generate_image_and_label_batch(image_batch_1, label_batch,
-                                                                      min_queue_examples, batch_size,
-                                                                      shuffle=False)
-    image_batch_2 = distorted_image(image_batch)
-    images_batch_2,labels_batch_2 = _generate_image_and_label_batch(image_batch_2, label_batch,
-                                                                      min_queue_examples, batch_size,
-                                                                      shuffle=False) 
-  '''                                                                   
-  images1,labels1 = _generate_image_and_label_batch(reshaped_image1, label,
-                                                min_queue_examples, batch_size,
-                                                shuffle=False)
-  images2,labels2 = _generate_image_and_label_batch(reshaped_image2, label,
-                                                min_queue_examples, batch_size,
-                                                shuffle=False)
-  '''
-  return images_batch_1,images_batch_2,labels_batch_2
-  #return images1,images2,labels2
-def read_batch (batch_size):
-  #Read each tensor in a batch
-  #input: 4-D tensor [batch, length, width, channel]
-  #outout:
-  images,labels = inputs(batch_size)
-  x = 0
-  for x in range (batch_size):
-    image_batch = tf.slice(images,[x,0,0,0],[1,500,500,3])
-    image_batch = tf.reshape(image_batch,[500,500,3])
-    label_batch = tf.slice(labels,[x],[1])
-    label_batch = tf.reshape(label_batch,[1])
-    image_batch_1 = distorted_image(image_batch)
-    min_fraction_of_examples_in_queue = 0.4
-    num_examples_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN
-    min_queue_examples = int(num_examples_per_epoch * min_fraction_of_examples_in_queue)
-    images_batch_1,labels_batch_1 = _generate_image_and_label_batch(image_batch_1, label_batch,
-                                                                      min_queue_examples, batch_size,
-                                                                      shuffle=False)
-    image_batch_2 = distorted_image(image_batch)
-    images_batch_2,labels_batch_2 = _generate_image_and_label_batch(image_batch_2, label_batch,
-                                                                      min_queue_examples, batch_size,
-                                                                      shuffle=False) 
-  #x += 1
-  return images_batch_1,images_batch_2,labels_batch_2
-  
-def inputs(batch_size):
+def inputs(eval,batch_size):
   '''
   Return a tensor of distorded image 
   '''
+  
   filenames = []
   labels = []
-  print("train")
-  filenames, labels = extract_labels(data_dir_train,txt_dir_train,one_hot=False, num_classes=3)
-  print (labels)
-  num_examples_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN
-  '''
+  if not eval:
+    filenames, labels = extract_labels(data_dir_train,txt_dir_train,one_hot=False, num_classes=3)
+    print (labels)
+    num_examples_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN
   else:
-    print("eval")
-    filenames, labels = extract_labels(data_dir_eval,txt_dir_eval,one_hot=False, num_classes=3)
+    filenames, labels = extract_labels(data_dir_eval,txt_dir_eval,one_hot=True, num_classes=3)
     num_examples_per_epoch = NUM_EXAMPLES_PER_EPOCH_FOR_EVAL
-  '''
+  #filenames = tf.train.match_filenames_once("/Users/phuongpham/Documents/CanePhotoToKmut/7-9months/*.jpg")
   #filenames = ['/Users/phuongpham/Documents/CanePhotoToKmut/7-9months/good2.jpg', '/Users/phuongpham/Documents/CanePhotoToKmut/7-9months/good3.jpg', '/Users/phuongpham/Documents/CanePhotoToKmut/7-9months/good4.jpg', '/Users/phuongpham/Documents/CanePhotoToKmut/7-9months/good5.jpg', '/Users/phuongpham/Documents/CanePhotoToKmut/7-9months/medium.JPG', '/Users/phuongpham/Documents/CanePhotoToKmut/7-9months/medium2.JPG', '/Users/phuongpham/Documents/CanePhotoToKmut/7-9months/poor.JPG', '/Users/phuongpham/Documents/CanePhotoToKmut/7-9months/poor2.JPG', '/Users/phuongpham/Documents/CanePhotoToKmut/7-9months/medium3.jpeg']
   #filenames = ['/Users/phuongpham/Documents/CanePhotoToKmut/7-9months/good2.jpg']
   filename_queue = tf.train.string_input_producer(filenames)
   filename,read_input = read_image(filename_queue)
-  rate = np.random.uniform(low=0, high=10)
-  #reshape_images = []
-  if rate<=8:
-    reshaped_image = distorted_image(read_input)
-  else:
-    resized = tf.image.resize_images(read_input, 500, 500, 1)
-    resized.set_shape([500,500,3])
-    reshaped_image = resized
-    
+  reshaped_image = distorted_image(read_input)
+  my_labels = tf.constant(labels)
   images = tf.convert_to_tensor(filenames, dtype=tf.string)
   labels = tf.convert_to_tensor(labels, dtype=tf.int32)
   input_queue = tf.train.slice_input_producer([images, labels],
-                                               shuffle=True)                                   
+                                               shuffle=True)
   image, label = read_images_from_disk(input_queue)
-  #distortions,new_labels = view_points(reshaped_image,label)
-  #batch
+  print (label)
   min_fraction_of_examples_in_queue = 0.4
   min_queue_examples = int(num_examples_per_epoch * min_fraction_of_examples_in_queue)
-  batch_size = 5
+  batch_size = 10
   images,labels = _generate_image_and_label_batch(reshaped_image, label,
                                     min_queue_examples, batch_size,
                                     shuffle=False)
-  #images = tf.reshape(images, [-1, 500, 500, 3])
-  #labels = tf.reshape(labels, [-1])
   #filenames, labels = extract_labels(data_dir_train,txt_dir_train,one_hot=True, num_classes=3)
   #filename,read_input = read_image(filename_queue)
-  #images_batch_1,labels_batch_1, images_batch_2,labels_batch_2 = read_batch (images, labels, batch_size)
-  return images,labels
+  return images, labels
 ''' 
   for i in xrange(5):
     filename,img = sess.run(image)
@@ -428,9 +317,9 @@ def flatten_layer(layer):
   return layer_flat, num_features
 
 def new_fc_layer(input,          # The previous layer.
-                 num_inputs,     # Num. inputs from prev. layer.
-                 num_outputs,    # Num. outputs.
-                 use_relu=True): # Use Rectified Linear Unit (ReLU)?
+         num_inputs,     # Num. inputs from prev. layer.
+         num_outputs,    # Num. outputs.
+         use_relu=True): # Use Rectified Linear Unit (ReLU)?
   weights = new_weights(shape=[num_inputs, num_outputs])
   biases = new_biases(length=num_outputs)
   layer = tf.matmul(input, weights) + biases
@@ -448,28 +337,11 @@ sess.run(inputs(None, train_batch_size))
 sess.close()
 '''
 with tf.Graph().as_default():
-  global total_iterations
-  total_iterations = 0
-  num_iterations = 10
-  '''
   x = tf.placeholder(tf.float32,shape=[None, 500,500,3], name='x')
   x_image = tf.reshape(x, [-1, img_size, img_size, num_channels])
   y_true = tf.placeholder(tf.float32,shape=[None, 3], name='y_true')
   y_true_cls = tf.argmax(y_true, dimension=1)
-  '''
-  x1 = tf.placeholder(tf.float32,shape=[None, 500,500,3], name='x1')
-  x_image1 = tf.reshape(x1, [-1, img_size, img_size, num_channels])
-  y_true = tf.placeholder(tf.float32,shape=[None, 3], name='y_true')
-  y_true_cls = tf.argmax(y_true, dimension=1)
-  
-  x2 = tf.placeholder(tf.float32,shape=[None, 500,500,3], name='x2')
-  x_image2 = tf.reshape(x2, [-1, img_size, img_size, num_channels])
-  
-  #y_true2 = tf.placeholder(tf.float32,shape=[None, 3], name='y_true2')
-  #y_true_cls2 = tf.argmax(y_true2, dimension=1)
-  
-  #print(y_true_cls.get_shape())
-  '''
+  print(y_true_cls.get_shape())
   layer_conv1, weights_conv1 = new_conv_layer(input=x_image,
                         num_input_channels=num_channels,
                         filter_size=filter_size1,
@@ -491,42 +363,6 @@ with tf.Graph().as_default():
                use_relu=False)
   y_pred = tf.nn.softmax(layer_fc2)
   y_pred_cls = tf.argmax(y_pred, dimension=1)
-  '''
-  layer_conv1_1, weights_conv1_1 = new_conv_layer(input=x_image1,
-                num_input_channels=num_channels,
-                filter_size=filter_size1,
-                num_filters=num_filters1,
-                use_pooling=True)
-  layer_conv2_1, weights_conv2_1 = new_conv_layer(input=layer_conv1_1,
-                num_input_channels=num_filters1,
-                filter_size=filter_size2,
-                num_filters=num_filters2,
-                use_pooling=True)
-  layer_conv1_2, weights_conv1_2 = new_conv_layer(input=x_image2,
-                num_input_channels=num_channels,
-                filter_size=filter_size1,
-                num_filters=num_filters1,
-                use_pooling=True)
-  layer_conv2_2, weights_conv2_2 = new_conv_layer(input=layer_conv1_2,
-                num_input_channels=num_filters1,
-                filter_size=filter_size2,
-                num_filters=num_filters2,
-                use_pooling=True)
-  layer_conv2 = tf.concat(1,[layer_conv2_1,layer_conv2_2])
-  print('LAYER CONV 2')
-  print (layer_conv2)
-  layer_flat, num_features = flatten_layer(layer_conv2)
-  layer_fc1 = new_fc_layer(input=layer_flat,
-          num_inputs=num_features,
-          num_outputs=fc_size,
-          use_relu=True)
-  layer_fc2 = new_fc_layer(input=layer_fc1,
-          num_inputs=fc_size,
-          num_outputs=num_classes,
-          use_relu=False)
-  y_pred = tf.nn.softmax(layer_fc2)
-  y_pred_cls = tf.argmax(y_pred, dimension=1)
-  
   print(y_pred_cls)
   cross_entropy = tf.nn.softmax_cross_entropy_with_logits(logits=layer_fc2,
                 labels=y_true)
@@ -539,46 +375,26 @@ with tf.Graph().as_default():
 
   train_batch_size = 2
   #image = extract_labels(one_hot = True, num_classes = 3)
-  image = read_batch(2)
-  image2 = evaluation(2)
+  image = inputs(None,2)
   init = tf.initialize_all_variables()
   sess = tf.Session()
   sess.run(init)
   tf.train.start_queue_runners(sess=sess)
-  for i in range(total_iterations,total_iterations + num_iterations):
-    #x_batch,y_true_batch = sess.run(image)
-    x_batch1,x_batch2,y_true_batch = sess.run(image)
-    y_true_batch = np.array(y_true_batch)
-    y_true_batch = dense_to_one_hot(y_true_batch, num_classes)
-    print (x_batch1)
-    print (x_batch2)
-    print(y_true_batch)
-    print(tf.argmax(y_true_batch, dimension=1))
-    #feed_dict_train = {x: x_batch, y_true: y_true_batch}
-    feed_dict_train = {x1: x_batch1, x2: x_batch2, y_true: y_true_batch}
-    print (sess.run(y_true_cls, feed_dict=feed_dict_train))
-    print (sess.run(y_pred, feed_dict=feed_dict_train))
-    print (sess.run(y_pred_cls, feed_dict=feed_dict_train))
-    print (sess.run(optimizer, feed_dict=feed_dict_train))
-    print (sess.run(accuracy, feed_dict=feed_dict_train))
-    #print(layer_conv1)
-    print(layer_flat)
-    print(layer_fc2)
-  total_iterations += num_iterations
-  
-  #Print test accuracy 
-  x_batch1,x_batch2,y_true_batch = sess.run(image2)
+  x_batch,y_true_batch = sess.run(image)
   y_true_batch = np.array(y_true_batch)
-  print ('y_true_batch')
-  print (y_true_batch)
   y_true_batch = dense_to_one_hot(y_true_batch, num_classes)
-  print ('y_true_batch')
-  print (y_true_batch)
-  feed_dict_train = {x1: x_batch1, x2: x_batch2, y_true: y_true_batch}
-  # Create a boolean array whether each image is correctly classified.
+  print (x_batch)
+  print(y_true_batch)
+  print(tf.argmax(y_true_batch, dimension=1))
+  feed_dict_train = {x: x_batch, y_true: y_true_batch}
+  print (sess.run(y_true_cls, feed_dict=feed_dict_train))
+  print (sess.run(y_pred, feed_dict=feed_dict_train))
   print (sess.run(y_pred_cls, feed_dict=feed_dict_train))
+  print (sess.run(optimizer, feed_dict=feed_dict_train))
   print (sess.run(accuracy, feed_dict=feed_dict_train))
-  
+  print(layer_conv1)
+  print(layer_flat)
+  print(layer_fc2)
   #msg = "Training Accuracy: {%}"
   #print(msg.format(acc))
 
