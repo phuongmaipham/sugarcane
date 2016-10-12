@@ -373,7 +373,7 @@ def inputs(batch_size):
   #batch
   min_fraction_of_examples_in_queue = 0.4
   min_queue_examples = int(num_examples_per_epoch * min_fraction_of_examples_in_queue)
-  batch_size = 5
+  batch_size = 10
   images,labels = _generate_image_and_label_batch(reshaped_image, label,
                                     min_queue_examples, batch_size,
                                     shuffle=False)
@@ -539,8 +539,8 @@ with tf.Graph().as_default():
 
   train_batch_size = 2
   #image = extract_labels(one_hot = True, num_classes = 3)
-  image = read_batch(2)
-  image2 = evaluation(2)
+  image = read_batch(7)
+  image2 = evaluation(7)
   init = tf.initialize_all_variables()
   sess = tf.Session()
   sess.run(init)
