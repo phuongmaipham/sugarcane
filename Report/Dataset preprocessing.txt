@@ -1,0 +1,144 @@
+In this section, we will describe our approach to developing a valid model for sugarcane grading using ground-level images. We will first discuss the experimental set up. We will then discuss  the successive processing steps used to obtain a set of predictive probabilities for each input image. The successive steps consists of the following: data preprocessing, data argumentation, view point extraction, convolutional neural network experimental design and model evaluation.
+ 
+**3.1 Experimental set up**
+- current situation, OS, how many GPU… 
+- how we gonna test, install 
+- judge: troubles? how easy to modify the struct of the network
+- documentation vs. reality
+
+- the plan: plan for evaluating framework (run images, build NN, look at the results)
+- how the results are expressed, bugs?
+
+1. Gathering data
+The dataset consists of sugarcane field images taken from ground level and is provided by Mitrphol company. As suggested by other  research, a minimum amount of 1000 pre-labeled samples in the dataset is required in order to train the convolutional neural networks. For the time being, we are provided with 31 pre-labeled image examples, which are divided into 4 growing seasons of sugarcane. We will use them to develop some simple models so as to evaluate the use of different frameworks. The full dataset is expected to be delivered by the end of the year. 
+
+2. Plan on experimenting different frameworks
+As mentioned in Section 2.10, we consider experimenting Caffe and Tensorflow as they have a balanced compromise among different aspects and appear to be adopted by most developers. In this section, we will discuss our plan to study the use of the two aforementioned frameworks. Then we will evaluate the usability of each framework based on the following criterions:
+
+The ease of the framework installation:
+We can evaluate the ease of installation by answering the following questions. Is the documentation for installing the framework easy to follow? Does the framework requires many other toolkits to be installed together with it? And if yes, is the installation of the supporting toolkits are complicated? 
+
+The ease of following the framework documentation:
+The documentation must provide instructions that are easy to follow. It must also contains understandable explanations of all operations that the framework provides.
+
+The ease of constructing the network:
+A good framework should provide a good set of ready-to-use low-level operators for writing new models. It should also allow us to modify the networks’ structure easily. Finally, it must support parallelism through GPU mode, which will allow us to train the networks with a reasonable amount of time.  
+
+The availability and accessibility of sample code and tutorials:
+Sample code and tutorials are important for us to understand how the framework works. If there are too little sample code and tutorials available, we might have difficulty in learning and modifying code in the framework. 
+
+The ease of understanding error messages from the framework:
+Error messages have to be helpful and easy to understand. 
+
+Tensorflow
+Installation
+Before installing Tensorflow, we will need to set up a few things. First, we will need to install Python. Details on how to install Python can be found in Python documentation [28]. Next, we will need to download and install CUDA toolkit in order to use Tensorflow CUDA version. Details can be found in CUDA installation documentation [29]. Finally, we can install Tensorflow on the machine. Different ways of installing Tensorflow is supported. In our case, we will try to install it via Virtualenv with GPU enabled mode [26], because it allows us to install TensorFlow in its own directory without affecting any existing Python programs on our machine.
+
+Testing plan
+In order to evaluate this framework, we plan to refine the code from Tensorflow documentation on ‘how to recognize hand-written digits from digital images in the MNIST data-set’ to build a simple model that suits our problem. The code refinement are as follows. First, the example code attempted to read images and labels of binary format, which is not our case. We will need to read all images in the dataset and associate each with a label. Details on how we did this will be explained in Section 3.2.
+
+We will reuse the next parts of the example code, with some modifications to fit the refinement we made at the beginning. Each time the system read an image, it will perform on this image a set of random transformations to create n new distorted images. The distorted images will inherit their labels from the original image. The original image and the distorted images will then be stored in a batch together with their labels. There is a finite number of batches, each of which stores a finite number of training images. The CNN is initialized with random weights and bias. At each iteration, a new batch is selected. 
+
+However, at this point, we want to try extracting a set of view points from each image in the batch and present each view point to the same convolutional architecture in a separated path, as suggested by Sander et al. (2015) [2]. Since the example code did not attempt do this, we need to modify it to fit our case. For each image in the selected batch, we will extract a set of view points and put them in an another, separated batch. We will 
+then present this new batch to the same convolutional architecture, but we will concatenate the results from the last ReLU layers of all convolutional architecture before sending them to the fully connected layers, where each input image is mapped with a suitable output class. Finally, Tensorflow provides a back-propagation method that allows all initial weights and bias in the networks to be updated so as to minimize the error rate within a single call. 
+
+We will assess the usability of the framework using the criterions specified earlier in this section based on how much trouble we will encounter during the experiment. 
+
+Caffe
+Installation
+Before installing Caffe, we will first need to install its dependencies. Caffe has some compulsory dependencies as follows. CUDA library is required to support GPU mode. BLAS library is required to support vector computation. Since Caffe base language is C++, Boost package is also required to support its C++ library. And Python is required to support its interface.
+Besides these compulsory dependencies, Caffe has some optional dependencies. Caffe optional dependencies are OpenCV for image processing and cuDNN for GPU acceleration.
+We will then install Caffe according to instructions on Caffe documentation [27]. 
+
+Testing plan
+In order to evaluate this framework, we plan to modify the imagenet tutorial in Caffe documentation to make the model trained on our sugarcane image. 
+The first step is to split our image dataset into two parts, one of which is the training set, the other is the testing set. There are three splitting strategies as described in Section 2.3.2. We will try the ‘hold out’ strategy because it is the most widely used. 
+
+After having the training and testing data all set, we will then refine the sample code so that it is able to read all images in each dataset and associate them with a label. To do this, we will have to create a text file for each dataset. Each line in the text file is a directory to an image in the dataset and is followed by its label, as described in Section 3.2.
+
+The next step is to inform the create_imagenet.sh file about the directory to the new dataset. To do this we will need to modify all arguments in that file that refers to one of the following: the training set directory, the testing set directory, the training set text file or the testing set text file. When we compile the create_imagenet.sh file, it will generate a training  leveldb and testing leveldb directories. Caffe will work with these leveldb directories instead. 
+
+We will then need to inform make_imagenet_mean.sh about our new leveldb directories. The file make_imagenet_mean.sh when being compile will create a file name imagenet_mean.binaryproto. Caffe uses this file to subtract the image mean value from each image in order to normalize our inputs. This step is probably irrelevant to our problem since we want to mimic the photos taken in different conditions with different mobile phones. Therefore, we may want to find a way to set the image mean value to zero.
+
+The final step is to notify each of these following file: solver.prototxt, train_val.prototxt and deploy.prototxt on the newly created leveldb directories and imagenet_mean.binaryproto.  
+The file solver.prototxt keeps information about how we will use  our dataset to train and test the CNN. One example is the number of iteration for the propagation and back-propagation cycle. The train_val.prototxt is where data argumentation is performed. The file deploy.prototxt defines the network structure. This is where the organisation of convolutional, pooling, ReLU and fully connected layers are defined. We plan to play around with this file in order to see how easily can we modify the networks’ structure using this framework.
+
+We will assess the usability of the framework using the criterions specified earlier in this section based on how much trouble we will encounter during the experiment. Then we will conclude which framework is better for our experiment. 
+
+3. Computer resource 
+We need a powerful GPU card that supports CUDA library to train the CNN. CUDA library documentation recommends any NVIDIA GPU card with compute capacity greater than 2, but the most powerful are some models of the NVIDIA Tesla and any model of the NVIDIA Geforce Titan [24]. We plan to use the KMUTT innosoft high performance computing service to train our CNN [25]. The innosoft server hosts a NVIDIA Tesla K10 card. This card has a compute capacity of 3.0 and is thus suitable for the experiment. 
+
+Tensorflow provides tf.device method and Caffe provides caffe.set_device(gpu_id) method. Both of these methods allow us to specify the remote GPU server that we would like to train our networks on. 
+ 
+**Data preprocessing **
+- we don’t have the data
+- simple images
+- associate images with labels 
+
+First, we will make sure that every image is associated with a label and all labels can be automatically interpreted by our system. For the moment, we have not obtained the full dataset. Therefore, it is difficult to tell exactly how we will let our system handle the labels. 
+
+In the example dataset we currently have, images are stored in the local machine and each of them is labeled by its name. We can handle this example dataset as follows. We will first label each file with a number in the range [0,2] according to its name, with 0 being **poor**, 1 being **medium** and 2 being **good**. We will then keep all information of the images in the dataset in a text file, where each line is a directory to an image followed by its label. Our networks can look at this file in order to locate each image and identify its label. Finally, if we look into the output layer of the CNN, we will see this layer contains three output neurons, each represents a class. Our final step is thus to encode decimal labels into binary labels where each digit of a binary label represents a class value. Nevertheless, the complete dataset could be split into different folders and labeled by folder names, in which case we could read each folder name and impose the label to all images contained within each folder. It could be hosted by a remote server, in which case the approach is the same with one variation: all directories are directories of files and images on the server. 
+
+Next, we will need to standardize each experimental image before sending them to the input layer of the CNN. Having all images standardized allows us to process them easier. We will  standardize the images as follows. We will first rotate images that are upside down. We will then resized each experimental image into a squared shape. Resizing images speeds up the training process with little or no effect on the accuracy [2]. Both Tensorflow and Caffe provide functions to perform these operations easily.
+  
+**Data argumentation **
+- What transformation? Done using numpy
+- why we need this?
+
+Due to the limitation of the training set size, we will need to artificially increase the number of the training samples. Each training sample is randomly distorted into n forms. However, in order to mimic the photos taken in different conditions with different mobile phones, they cannot be extremely distorted. 
+
+We will experiment the network with different value of n and see whether adjusting this value will have any significant effect on the accuracy.
+Each distorted  method is a combination of the following elementary forms of transformations. Details about the mechanic behind each form of transformation was discussed in Section 2.10.
+**Brightness and contrast adjustment:** 
+We plan to test the brightness and contrast adjustment operations with different input value and print out the resulting image. By doing this, we can look for the range in which the resulting image is most similar to images taken by mobile phones. We will then able to choose a random value within this range an impose it to different input images. 
+
+**Cropping**: We will randomly crop an area in the central region of an image for two reasons. Randomly cropping mimics photos of the same object taken by different people, while cropping an area in the central region retains the important information from an image. We plan to crop out from 20-40% and retain from 60-80% the area in the central region of an image. 
+
+Tensorflow provides operations that allow us to transform an image within a single call without writing extra code. The operations that we plan to use are:
+tf.image.adjust_brightness(image, delta) for adjusting an image brightness
+tf.image.adjust_contrast(image, delta) for adjusting an image contrast
+tf.image.central_crop(image, central_fraction) for cropping an image
+Details on how to use these operations can be found on Tensorflow documentations [26].
+
+Caffe provides the **transform_param**, where we can set a value of the **contrast_adjustment**, **brightness__adjustment** and **crop** variables to make it do the same job. However, depending on which Caffe version is used, we may have to add some C++ code to the transform_param function in order to specify the extract job for each operation. 
+
+**View points extraction**
+After data argumentation, we will extract an n different view points by cropping, adjusting the brightness and contrast of each input image. By theory, view points extraction allows the CNN to ‘look at’ each input image at different perspective. Thus, exploiting view points extraction in constructing a model should improve it accuracy. To test this theory, we will build our models both with and without view points. We will also try to increase n in order to see whether it will increase the accuracy.  
+
+**Experimental designs **
+- main things affect the accuracy 
+- different? easy to change 
+
+*Vary? levels of independent variables* 
+- number of layer of each type x
+- Size of kernel x
+- pooling strategy x
+- view points vs. no view points x
+- input size x
+- segregate by growing seasons vs. combine them together 
+- Training and testing strategy
+
+1. Strategy for organizing training and testing set
+Before building any model, we will need to divide the given dataset into training and testing sets. We will use the ‘hold out’ strategy because it is the most popular.  
+
+2. Data segregation strategy
+It is uncertain whether models trained with datasets segregated by different growing seasons will have better accuracy than a single model trained with the entire dataset. We will begin by building one model for the entire dataset. However, if we have a big enough amount of data on each growing seasons and if time allows us, we will develop a model for each season. 
+
+3. Networks architecture
+After choosing an appropriate frameworks, we will begin to experiment different CNN architectures. We will start with the CNN architecture suggested by the classic article by Krizvevsky et al. (2012). It consists of 8 trainable layers. There are 5 convolutional layers, all of them have squared filters with size 11,5,3,3,3 respectively. The first, second and fifth convolutional layers are followed by an overlap 3 by 3 max pooling layer with stride 2. The feature maps from the last max pooling layer is then processed by three fully connected layers.    The results from the final fully connected layer is fed to a softmax function, which will produce a prediction over the three classes. [1]
+Next, we will modify this architecture by adjusting different levels of independent variables and see whether any of these adjustments will help increase the accuracy. 
+
+The simplest adjustment is the size of input images. Krizvevsky et al. (2012) uses squared input images of size 224. Larger input images would cost the CNN more training time. In our case, we would like to know the input images size that generates the best accuracy with an optimal amount of time. 
+
+The size of the filters and the use of overlap pooling are probably the two least time consuming adjustment because they do not considerably expand the size of a model. However, previous experiments showed that it is not always the case that they will affect the accuracy. In this experiment, we will first test whether the use of overlap pooling will increase the accuracy. We will then adjust each filter size up to 2 by 2 pixels difference from the original to test whether they have some significant effects to the accuracy.
+
+According to Aaron et al. (2015), view point extraction would increase the accuracy. Nevertheless, view points extraction increase the number of input images and the number of  CNNs by n times, where n is the number of view points extracted [2]. We would like to experiment view point extraction on our problem to see whether it will improve the prediction capability of a model. We will start by extracting two view points and gradually increase it according to the available time. 
+
+Increasing the number of layers of each type would potentially increase the accuracy. However, it will take more time to train a CNN with more layers. We will gradually increase the number of convolutional layers according to the time we have. 
+
+**Results evaluation **
+- How the results look like? 
+
+In order to evaluate the results, we will calculate the accuracy and the error rate of each model. We will compare the predictions made by a model with the original label of each input image. The accuracy is the percentage of correct prediction over the total number of input images. The error rate  is the negation of the accuracy. 
+
+For human evaluation, we will also print out the original labels and the labels predicted by a model for the input images. 
