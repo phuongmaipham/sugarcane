@@ -1,0 +1,36 @@
+**Tensorflow:**
+Installation steps for non Cuda:
+sudo chown -R $USER /usr/local/lib/python2.7/
+pip uninstall protobuf
+pip uninstall tensorflow
+brew uninstall protobuf
+export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/mac/tensorflow-0.9.0-py2-none-any.whl
+pip install --upgrade $TF_BINARY_URL
+
+The Installation steps are neat. Tutorial and sample codes are widely available on the Internet. The biggest disadvantage of Tensorflow would be its compute time. When computing with one CPU, it took many hours longer for Tensorflow to process the same number of train data set with the same number of iterations than Torch.
+Tensorflow, in general, has a good documentation that is well organized and easy to understand. 
+
+**Caffe**
+Installation 
+Caffe has many dependency packages, including CUDA, Blas, Boost, OpenCV, cuDNN, snappy, leveldb, gflags, glog, szip, lmdb. There was no single command to install Caffe. We had to install each package individually. Because the packages were installed separately, some were located at unexpected places in the computer. This led to the failure of the caffe ‘make’ command since it could not locate some of the required libraries that existed somewhere in the code. 
+The versions of some packages were not compatible with that of another. In our case, CUDA 8.0 was not supported by Xcode 8 so we had to downgrade it to Xcode 7. Caffe documentation did not provide these information, we had to look for it in CUDA documentation. 
+The installation pipe was broken. We had to modify some codes according to the instructions in their documentation in order to be able to execute it. 
+The documentation was not very useful and hard to understand. We followed what it said but we could not find out how to install caffe.
+**Torch**
+Installation steps are as follows:
+1. #in a terminal, run the commands WITHOUT sudo
+git clone https://github.com/torch/distro.git ~/torch --recursive
+cd ~/torch; bash install-deps;
+./install.sh
+2. echo ". /Users/phuongpham/torch/install/bin/torch-activate" > ~/.profile
+3. source ~/.profile
+Pros and cons.
+The installation of Torch is very simple. 
+The compute time is very fast compared to Tensorflow.
+The error messages are overall useful.
+However, the biggest weakness of Torch is that it uses Lua as an API language. This is a not very popular programming language. Therefore, the learning curve is low as it is very hard to find example codes and tutorials from the Internet.  
+It was also difficult to find out the correct number of output channels given a particular number of input channels as Torch is very strict about this. The documentation did not provide this information. 
+**What we found with the current dataset?**
+The accuracy increases when the number of training samples and testing samples increases. 
+The accuracy also increases when the number of iterations increases. 
+At different runs, the results were different. This might be due to the different features learnt. 
