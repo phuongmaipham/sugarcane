@@ -192,7 +192,10 @@ Class: Avg      - original
 ------------GROWING SEASON: ALL ----------------------
 ------------CLASS "GOOD" & "MEDIUM" ------------------
 ------------------------------------------------------
+sugarcane-train-7b.t7  					  training set - #Good = #Med = 653; #Total = 1306 
 sugarcane-test-7b.t7                     testing set - 366 
+
+model 7b - 1.t7
 
 Image size: 32x32
 Class: Good     - original
@@ -233,6 +236,28 @@ result12-2.txt	lenet	2
 Models:
 model12-1.t7
 model12-2.t7
+
+Training:
+Size: 32 x 32
+Class: Good		- original
+		 		- bottom left crop, size 200 x 200
+				- bottom right crop, size 200 x 200
+				- central crop, size 200 x 200
+Class: Avg		- original
+				- bottom left crop, size 200 x 200
+				- bottom right crop, size 200 x 200
+				- central crop, size 200 x 200
+
+------------GROWING SEASON: ALL ----------------------
+------------CLASS "GOOD" & "MEDIUM" ------------------
+------------------------------------------------------
+sugarcane-train-12b.t7                    training set - #Good = #Avg = 2608; #Total = 5216
+
+Results:
+result12b-1.txt  lenet	1
+
+Models:
+model12b-1.t7
 
 Training:
 Size: 32 x 32
@@ -350,9 +375,10 @@ Class: Avg      - original
 ------------GROWING SEASON: MED ---------------------
 ------------CLASS "GOOD" & "MEDIUM" ------------------
 -----------------------------------------------------
-sugarcane-test-25b.t7                    testing set - 282 
+sugarcane-train-25b.t7                    training set - #Good  = #Avg = 282; #Total = 564
 
 Size: 32 x 32
+model 25b - 1
 
 Class: Good     - original
 Class: Avg      - original
@@ -417,6 +443,24 @@ Class: Avg		- original
 				- bottom left crop, size 200 x 200
 				- bottom right crop, size 200 x 200
 				- central crop, size 200 x 200
+				
+------------GROWING SEASON: MED ----------------------
+------------CLASS "GOOD" & "MEDIUM" ------------------
+------------------------------------------------------
+sugarcane-train-28b.t7                   training set -  #Good = #Avg = 564; #Total = 1128
+
+Size: 32 x 32
+Growing season: Med
+model 28b - 1 
+
+Class: Good		- original
+				- bottom left crop, size 200 x 200
+				- bottom right crop, size 200 x 200
+				- central crop, size 200 x 200
+Class: Avg		- original
+				- bottom left crop, size 200 x 200
+				- bottom right crop, size 200 x 200
+				- central crop, size 200 x 200
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 ------------GROWING SEASON: LATE & EARLY ---------------------
@@ -431,10 +475,23 @@ model 29 - 1
 Class: Good     - original
 Class: Avg      - original
 
+
+------------GROWING SEASON: LATE & EARLY ---------------------
+------------CLASS "GOOD" & "MEDIUM" ------------------
+-----------------------------------------------------
+sugarcane-train-29b.t7                   training set - #Good = #Avg = 370; #Total = 740
+
+Size: 32 x 32
+model 29b - 1
+
+Class: Good     - original
+Class: Avg      - original
+
 ------------GROWING SEASON: LATE & EARLY ---------------------
 ------------CLASS "GOOD" & "MEDIUM" ------------------
 -----------------------------------------------------
 sugarcane-train-30.t7                   training set - 2984 
+sugarcane-test-30.t7 					 testing set - 1504 
 
 Size: 32 x 32 
 model 30 - 1
@@ -448,3 +505,79 @@ Class: Avg		- original
 				- bottom right crop, size 200 x 200
 				- central crop, size 200 x 200
 
+------------GROWING SEASON: LATE & EARLY ---------------------
+------------CLASS "GOOD" & "MEDIUM" ------------------
+-----------------------------------------------------
+sugarcane-train-30b.t7                   training set - #Good = #Avg = 1480; #Total = 2960 
+
+Size: 32 x 32 
+model 30b - 1
+
+Class: Good		- original
+				- bottom left crop, size 200 x 200
+				- bottom right crop, size 200 x 200
+				- central crop, size 200 x 200
+Class: Avg		- original
+				- bottom left crop, size 200 x 200
+				- bottom right crop, size 200 x 200
+				- central crop, size 200 x 200
+				
+------------GROWING SEASON: LATE & EARLY ---------------------
+------------CLASS "GOOD" & "MEDIUM" ------------------
+-----------------------------------------------------
+sugarcane-test-31.t7 					 testing set - 1128 
+
+Size: 32 x 32 
+
+Class: Good		
+				- bottom left crop, size 200 x 200
+				- bottom right crop, size 200 x 200
+				- central crop, size 200 x 200
+Class: Avg		
+				- bottom left crop, size 200 x 200
+				- bottom right crop, size 200 x 200
+				- central crop, size 200 x 200
+				
+------------GROWING SEASON: LATE & EARLY ---------------------
+------------CLASS "GOOD" & "MEDIUM" ------------------
+-----------------------------------------------------
+sugarcane-train-32.t7                   training set - 2984 
+sugarcane-test-32.t7 					 testing set - 1504 
+
+Size: 128 x 128
+model 30 - 1
+
+Class: Good		- original
+				- bottom left crop, size 200 x 200
+				- bottom right crop, size 200 x 200
+				- central crop, size 200 x 200
+Class: Avg		- original
+				- bottom left crop, size 200 x 200
+				- bottom right crop, size 200 x 200
+				- central crop, size 200 x 200
+				
+------------GROWING SEASON: LATE & EARLY ---------------------
+------------CLASS "GOOD" & "MEDIUM" ------------------
+-----------------------------------------------------
+sugarcane-test-33.t7 					 testing set - 1128 
+
+Size: 128 x 128
+
+Class: Good		
+				- bottom left crop, size 200 x 200
+				- bottom right crop, size 200 x 200
+				- central crop, size 200 x 200
+Class: Avg		
+				- bottom left crop, size 200 x 200
+				- bottom right crop, size 200 x 200
+				- central crop, size 200 x 200
+				
+------------GROWING SEASON: LATE & EARLY ---------------------
+------------CLASS "GOOD" & "MEDIUM" ------------------
+-----------------------------------------------------
+sugarcane-test-34.t7                    testing set - 376 
+
+Size: 128 x 128
+
+Class: Good     - original
+Class: Avg      - original
