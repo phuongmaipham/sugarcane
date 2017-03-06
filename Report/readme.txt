@@ -505,6 +505,10 @@ Class: Avg
 -----------------------------------------GROWING SEASON: ALL---------------------------------------------
 ---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
 ---------------------------------------------------------------------------------------------------------
+sugarcane-train-38.t7			training set - 1203 
+Model:
+	model38-1.t7			lenet1, i = 15 
+	model38-2.t7			lenet1,i = 50 
 sugarcane-test-38.t7                    testing set - 605
 
 Size: 32 x 32
@@ -548,7 +552,36 @@ Class: Avg
 				- bottom left crop, size 400 x 400
 				- bottom right crop, size 400 x 400
 				- central crop, size 400 x 400
-				
+
+-----------------------------------------GROWING SEASON: ALL---------------------------------------------
+---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
+sugarcane-train-52.t7                   training set - 1203
+Model:
+	model52-1.t7			lenet 1, i = 15
+	model52-2.t7			lenet 1, i = 50
+sugarcane-test-53.t7			testing set - 605
+	
+Size: 32 x 32
+Class: Good			- squared original
+Class: Avg			- squared original
+
+-----------------------------------------GROWING SEASON: ALL---------------------------------------------
+---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
+sugarcane-train-53.t7                   training set - 4812
+Model:
+	model53-1.t7			lenet1, i = 15
+	model53-2.t7			lenet1, i = 50
+
+Size: 32 x 32
+Class: Good			- squared original 
+		 		- bottom left crop, size 400 x 400
+				- bottom right crop, size 400 x 400
+				- central crop, size 400 x 400
+Class: Avg			- squared original 
+				- bottom left crop, size 400 x 400
+				- bottom right crop, size 400 x 400
+				- central crop, size 400 x 400
+		
 *********************************************************************************************************
 -----------------------------------------GROWING SEASON: ALL---------------------------------------------
 ---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
@@ -599,6 +632,10 @@ Class: Avg
 -----------------------------------------GROWING SEASON: MED---------------------------------------------
 ---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
 ---------------------------------------------------------------------------------------------------------
+sugarcane-train-55.t7 			training set - 540 
+Model:
+	model55-1.t7 			lenet1, i = 15
+	model55-2.t7			lenet1, i = 50 
 sugarcane-test-41.t7                    testing set - 271 
 
 Size: 32 x 32
@@ -643,7 +680,7 @@ Class: Avg
 				- bottom left crop, size 400 x 400
 				- bottom right crop, size 400 x 400
 				- central crop, size 400 x 400
-				
+
 *********************************************************************************************************
 -----------------------------------------GROWING SEASON: MED---------------------------------------------
 ---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
@@ -653,6 +690,39 @@ sugarcane-test-46.t7                    testing set - 271
 Size: 32 x 32
 Class: Good			- Original
 Class: Avg			- Original
+
+-----------------------------------------GROWING SEASON: MED---------------------------------------------
+---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
+---------------------------------------------------------------------------------------------------------
+sugarcane-train-54.t7                    training set - 540 
+Models:
+	model54-1.t7			 lenet 1, i = 50
+	model54-2.t7			 lenet 1, i = 100
+	model54-3.t7			 lenet 1, i = 15
+	model54-4.t7			 lenet 1, i = 30
+sugarcane-test-54.t7                     testing set - 271
+
+Size: 32 x 32
+Class: Good			- Squared original
+Class: Avg			- Squared original
+
+-----------------------------------------GROWING SEASON: MED---------------------------------------------
+---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
+---------------------------------------------------------------------------------------------------------
+sugarcane-train-56.t7                    training set - 2160 
+Models:
+	model56-1.t7			 lenet 1, i = 15
+	model56-2.t7			 lenet 1, i = 50
+
+Size: 32 x 32
+Class: Good			- Squared original
+		 		- bottom left crop, size 400 x 400
+				- bottom right crop, size 400 x 400
+				- central crop, size 400 x 400
+Class: Avg			- Squared original
+		 		- bottom left crop, size 400 x 400
+				- bottom right crop, size 400 x 400
+				- central crop, size 400 x 400
 
 -----------------------------------------GROWING SEASON: MED---------------------------------------------
 ---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
@@ -694,6 +764,7 @@ Class: Avg
 -------------------------------------GROWING SEASON: EARLY & LATE----------------------------------------
 ---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
 ---------------------------------------------------------------------------------------------------------
+sugarcane-train-59.t7			training set - 663
 sugarcane-test-43.t7                    testing set -  334
 
 Size: 32 x 32
@@ -746,6 +817,38 @@ sugarcane-test-50.t7                    testing set -  334
 Size: 32 x 32
 Class: Good			- Original
 Class: Avg			- Original
+
+-------------------------------------GROWING SEASON: EARLY & LATE----------------------------------------
+---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
+---------------------------------------------------------------------------------------------------------
+sugarcane-train-57.t7                   testing set -  663
+Models:
+	model57-1.t7 			lenet1, i = 15
+	model57-2.t7 			lenet1, i = 50
+sugarcane-test-57.t7                    testing set -  334
+
+Size: 32 x 32
+Class: Good			- Squared original
+Class: Avg			- Squared original
+
+-------------------------------------GROWING SEASON: EARLY & LATE----------------------------------------
+---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
+---------------------------------------------------------------------------------------------------------
+sugarcane-train-58.t7                   testing set - 2652
+Models:
+	model58-1.t7 			lenet1, i = 15
+	model58-2.t7 			lenet1, i = 50
+
+Size: 32 x 32
+Class: Good			- Squared original
+		 		- bottom left crop, size 400 x 400
+				- bottom right crop, size 400 x 400
+				- central crop, size 400 x 400
+Class: Avg			- Squared original
+		 		- bottom left crop, size 400 x 400
+				- bottom right crop, size 400 x 400
+				- central crop, size 400 x 400
+
 -------------------------------------GROWING SEASON: EARLY & LATE----------------------------------------
 ---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
 ---------------------------------------------------------------------------------------------------------
@@ -780,3 +883,16 @@ Class: Avg
 				- bottom left crop, size 448x448
 				- bottom right crop, size 448x448
 				- central crop, size 448x448
+
+-------------------------------------GROWING SEASON: MID & LATE----------------------------------------
+---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
+---------------------------------------------------------------------------------------------------------
+sugarcane-train-60.t7                   testing set -  663
+Models:
+	model60-1.t7 			lenet1, i = 15
+	model60-2.t7 			lenet1, i = 50
+sugarcane-test-60.t7                    testing set -  334
+
+Size: 32 x 32
+Class: Good			- original
+Class: Avg			- original
