@@ -765,6 +765,9 @@ Class: Avg
 ---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
 ---------------------------------------------------------------------------------------------------------
 sugarcane-train-59.t7			training set - 663
+Models:
+	model59-1.t7 			lenet1, i = 15
+	model59-2.t7 			lenet1, i = 50 
 sugarcane-test-43.t7                    testing set -  334
 
 Size: 32 x 32
@@ -887,12 +890,81 @@ Class: Avg
 -------------------------------------GROWING SEASON: MID & LATE----------------------------------------
 ---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
 ---------------------------------------------------------------------------------------------------------
-sugarcane-train-60.t7                   testing set -  663
+sugarcane-train-60.t7                   testing set -  765
 Models:
 	model60-1.t7 			lenet1, i = 15
 	model60-2.t7 			lenet1, i = 50
-sugarcane-test-60.t7                    testing set -  334
+sugarcane-test-60.t7                    testing set -  385
 
 Size: 32 x 32
 Class: Good			- original
 Class: Avg			- original
+
+-------------------------------------GROWING SEASON: MID & LATE----------------------------------------
+---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
+---------------------------------------------------------------------------------------------------------
+sugarcane-train-64.t7                   testing set - 2295 
+Models:
+	model64-1.t7 			lenet1, i = 15
+sugarcane-test-64.t7                    testing set - 1155
+
+Size: 32 x 32
+Class: Good			
+		 		- bottom left crop, size 400 x 400
+				- bottom right crop, size 400 x 400
+				- central crop, size 400 x 400
+Class: Avg		
+		 		- bottom left crop, size 400 x 400
+				- bottom right crop, size 400 x 400
+				- central crop, size 400 x 400
+
+-------------------------------------GROWING SEASON: MID & LATE----------------------------------------
+---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
+---------------------------------------------------------------------------------------------------------
+sugarcane-train-63.t7                   testing set -  3060
+Models:
+	model63-1.t7 			lenet1, i = 15
+sugarcane-test-63.t7                    testing set -  1540
+
+Size: 32 x 32
+Class: Good			- original
+		 		- bottom left crop, size 400 x 400
+				- bottom right crop, size 400 x 400
+				- central crop, size 400 x 400
+Class: Avg			- original
+		 		- bottom left crop, size 400 x 400
+				- bottom right crop, size 400 x 400
+				- central crop, size 400 x 400
+
+-------------------------------------GROWING SEASON: MID & LATE----------------------------------------
+---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
+---------------------------------------------------------------------------------------------------------
+sugarcane-train-61.t7                   testing set -  765
+Models:
+	model61-1.t7 			lenet1, i = 15
+	model61-2.t7 			lenet1, i = 50
+sugarcane-test-61.t7                    testing set -  385
+
+Size: 32 x 32
+Class: Good			- squared original
+Class: Avg			- squared original
+
+
+-------------------------------------GROWING SEASON: MID & LATE----------------------------------------
+---------------------------------------CLASS "GOOD" & "MEDIUM"-------------------------------------------
+---------------------------------------------------------------------------------------------------------
+sugarcane-train-62.t7                   testing set -  3060
+Models:
+	model62-1.t7 			lenet1, i = 15
+	model62-2.t7 			lenet1, i = 50
+
+Size: 32 x 32
+Class: Good			- squared original
+		 		- bottom left crop, size 400 x 400
+				- bottom right crop, size 400 x 400
+				- central crop, size 400 x 400
+Class: Avg			- squared original
+		 		- bottom left crop, size 400 x 400
+				- bottom right crop, size 400 x 400
+				- central crop, size 400 x 400
+
